@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   nginx:
       build: .
@@ -12,8 +10,6 @@ services:
         - ./logs:/var/log/nginx
         - /home/root:/root
         - /etc/localtime:/etc/localtime
-      profiles:
-        - release
       restart: always
       environment:
         - NGINX_PORT=${NGINX_PORT:-80}

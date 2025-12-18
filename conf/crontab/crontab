@@ -14,7 +14,7 @@
 SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-# 每分钟的健康检查日志（调试用，可选）
-# * * * * * echo 'Certbot cron job is running' > /proc/1/fd/1 2>/proc/1/fd/2
-0 12 * * * certbot renew --quiet > /proc/1/fd/1 2>/proc/1/fd/2
-0 6 * * * nginx -t && nginx -s reload > /proc/1/fd/1 2>/proc/1/fd/2
+# 调试用：首次启动后10秒执行一次调试（可选，验证cron功能）
+# * * * * * root echo 'Certbot cron job is running' > /proc/1/fd/1 2>/proc/1/fd/2
+0 12 * * * root certbot renew --quiet > /proc/1/fd/1 2>/proc/1/fd/2
+0 6 * * * root nginx -t && nginx -s reload > /proc/1/fd/1 2>/proc/1/fd/2

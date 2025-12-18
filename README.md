@@ -10,16 +10,21 @@
 - 📋 通用配置模板
 - 🐳 Docker容器化部署
 
+## 前置要求
+
+### Windows系统
+- **Docker Desktop for Windows** - 请访问 [Docker官网](https://www.docker.com/products/docker-desktop/) 下载并安装
+- **Git Bash** 或其他终端工具
+
+### 安装步骤
+1. 下载并安装 [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+2. 启动Docker Desktop并等待其完全启动（状态栏图标显示为运行中）
+3. 重新打开终端或命令行窗口
+4. 验证安装：`docker --version` 和 `docker compose version`
+
 ## 快速开始
 
-### 1. 环境准备
-
-```sh
-mkdir -p /root/nginx-web
-chmod 775 /root
-```
-
-### 2. 配置环境变量
+### 1. 配置环境变量
 
 ⚠️ **重要提示**：`.env` 文件包含敏感配置信息，**不要**提交到版本控制！
 
@@ -52,7 +57,7 @@ COUNTRY=US
 NGINX_PORT=80
 ```
 
-### 3. 启动服务
+### 2. 启动服务
 
 #### 方法1：使用快速启动脚本（推荐）
 
@@ -68,16 +73,16 @@ chmod +x start.sh
 
 ```sh
 # 构建镜像
-docker-compose build
+docker compose build
 
 # 启动服务
-docker-compose up -d
+docker compose up -d
 
 # 查看日志
-docker-compose logs -f
+docker compose logs -f
 
 # 停止服务
-docker-compose down
+docker compose down
 ```
 
 ## 项目结构
@@ -88,7 +93,7 @@ docker-compose down
 │   ├── crontab/           # 定时任务配置
 │   └── templates/         # Nginx配置模板
 ├── logs/                  # Nginx日志目录
-├── docker-compose.yml     # Docker Compose配置
+├── docker compose.yml     # Docker Compose配置
 ├── Dockerfile            # Docker镜像构建文件
 ├── start.sh              # 快速启动脚本
 ├── .env.example          # 环境变量配置示例
@@ -152,28 +157,28 @@ chmod +x start.sh
 
 ```sh
 # 构建镜像
-docker-compose build
+docker compose build
 
 # 启动服务
-docker-compose up -d
+docker compose up -d
 
 # 停止服务
-docker-compose down
+docker compose down
 
 # 查看日志
-docker-compose logs -f
+docker compose logs -f
 
 # 进入容器
-docker-compose exec nginx bash
+docker compose exec nginx bash
 
 # 重启服务
-docker-compose restart
+docker compose restart
 
 # 查看服务状态
-docker-compose ps
+docker compose ps
 
 # 检查Nginx配置
-docker-compose exec nginx nginx -t
+docker compose exec nginx nginx -t
 ```
 
 ## 注意事项
@@ -186,17 +191,17 @@ docker-compose exec nginx nginx -t
 - 建议配置防火墙规则，只允许80和443端口
 
 ### 故障排查
-- 检查容器状态：`docker-compose ps`
-- 查看服务日志：`docker-compose logs -f`
-- 验证Nginx配置：`docker-compose exec nginx nginx -t`
-- 检查证书状态：`docker-compose exec nginx certbot certificates`
+- 检查容器状态：`docker compose ps`
+- 查看服务日志：`docker compose logs -f`
+- 验证Nginx配置：`docker compose exec nginx nginx -t`
+- 检查证书状态：`docker compose exec nginx certbot certificates`
 
 ### 调试
 查看日志，进入容器查看网络。
 ```sh
 cd logs
 tail -f error.log
-docker-compose exec nginx bash
+docker compose exec nginx bash
 apt-get install net-tools
 netstat -antp
 tcp6       0      0 :::8080                 :::*                    LISTEN      43/nginx: master pr 
@@ -226,7 +231,7 @@ tcp6       0      0 :::443                  :::*                    LISTEN      
 要添加新域名而不影响现有域名：
 ```sh
 # 进入容器
-docker-compose exec nginx bash
+docker compose exec nginx bash
 
 # 手动申请新域名证书
 certbot --nginx --non-interactive --agree-tos -m your-email@example.com --domains new-domain.com

@@ -34,6 +34,20 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# 调试：验证cron配置已加载
+echo "Verifying cron configuration..."
+if [ -f "/etc/cron.d/certbot" ]; then
+    echo "✓ Certbot cron file found:"
+    cat /etc/cron.d/certbot
+    echo ""
+    
+    # 等待2秒后检查cron是否识别配置
+    sleep 2
+    echo "✓ Cron service status: $(service cron status | head -1)"
+else
+    echo "⚠ Warning: /etc/cron.d/certbot not found"
+fi
+
 # Create a self signed certificate, should the user need it
 echo "Creating self-signed certificate..."
 openssl req -subj "/C=$COUNTRY/" -x509 -nodes -newkey rsa:2048 -keyout /etc/ssl/private/default-server.key -out /etc/ssl/certs/default-server.crt
