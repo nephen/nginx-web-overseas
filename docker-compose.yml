@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  nginx:
+      build: .
+      network_mode: "host"
+      container_name: ${CONTAINER_NAME:-nginx-cert}
+      volumes:
+        - ./conf/templates:/etc/nginx/templates
+        - ./conf/cert:/etc/nginx/cert
+        - ./conf/conf.d:/etc/nginx/conf.d
+        - ./logs:/var/log/nginx
+        - /home/root:/root
+        - /etc/localtime:/etc/localtime
+      profiles:
+        - release
+      restart: always
+      environment:
+        - NGINX_PORT=${NGINX_PORT:-80}
+        - EMAIL=${EMAIL}
+        - DOMAINS=${DOMAINS}
+        - COUNTRY=${COUNTRY:-US}
+        - PROXY_PORT=${PROXY_PORT:-8080}
+        - PROXY_HOST=${PROXY_HOST:-127.0.0.1}
+      healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost/health"]
+        interval: 30s
+        timeout: 10s
+        retries: 3
+        start_period: 30s
