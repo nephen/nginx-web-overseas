@@ -61,13 +61,13 @@ if [ ! -f "/etc/nginx/conf.d/default.conf" ]; then
     echo "Generating nginx configuration..."
     
     # 设置环境变量供Nginx模板使用
-    export DOMAINS=$(echo $DOMAINS | tr ',' ' ')
+    export NGINX_DOMAINS=$(echo $DOMAINS | tr ',' ' ')
     export PROXY_HOST=$PROXY_HOST
     export PROXY_PORT=$PROXY_PORT
     
     # 使用envsubst替换模板中的变量
     if [ -f "/etc/nginx/templates/default.conf.template" ]; then
-        envsubst '${DOMAINS} ${PROXY_HOST} ${PROXY_PORT}' < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf
+        envsubst '${NGINX_DOMAINS} ${PROXY_HOST} ${PROXY_PORT}' < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf
     else
         # 如果没有模板文件，直接生成配置
         cat > /etc/nginx/conf.d/default.conf << EOF
@@ -75,7 +75,7 @@ server {
     listen 80 default_server;
     listen [::]:80 default_server;
 
-    server_name $(echo $DOMAINS | tr ',' ' ');
+    server_name $(echo $NGINX_DOMAINS | tr ',' ' ');
 
     location / {
         proxy_set_header X-Real-IP \$remote_addr;
