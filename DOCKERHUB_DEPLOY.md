@@ -10,10 +10,10 @@ mkdir nginx-proxy && cd nginx-proxy
 ### 2. 下载部署文件
 ```bash
 # 下载docker-compose文件
-curl -o docker-compose.yml https://raw.githubusercontent.com/your-username/nginx-web-overseas/main/docker-compose.hub.yml
+curl -o docker-compose.yml https://raw.githubusercontent.com/nephen/nginx-web-overseas/main/docker-compose.hub.yml
 
 # 下载环境变量示例
-curl -o .env.example https://raw.githubusercontent.com/your-username/nginx-web-overseas/main/.env.example
+curl -o .env.example https://raw.githubusercontent.com/nephen/nginx-web-overseas/main/.env.example
 ```
 
 ### 3. 配置环境
@@ -44,7 +44,7 @@ docker compose logs -f
 ### 手动构建
 ```bash
 # 克隆仓库
-git clone https://github.com/your-username/nginx-web-overseas.git
+git clone https://github.com/nephen/nginx-web-overseas.git
 cd nginx-web-overseas
 
 # 构建并推送（需要Docker Hub账号）
