@@ -1,7 +1,5 @@
 # Docker Hub镜像部署版本
 # 使用预构建的镜像，无需本地构建
-version: '3.8'
-
 services:
   nginx:
     # 使用Docker Hub上的预构建镜像
