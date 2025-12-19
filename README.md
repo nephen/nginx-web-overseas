@@ -162,9 +162,6 @@ PROXY_PORT=3000
 | PROXY_PORT | 否 | 8080 | 反向代理目标端口 |
 | COUNTRY | 否 | US | SSL证书国家代码 |
 | NGINX_PORT | 否 | 80 | Nginx监听端口 |
-| TZ | 否 | UTC | 时区设置 |
-| STAGING | 否 | false | 是否使用staging模式 |
-| RENEWAL_DAYS | 否 | 30 | 证书续期提前天数 |
 
 ## 常用命令
 
