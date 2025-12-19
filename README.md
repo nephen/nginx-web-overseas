@@ -22,9 +22,33 @@
 3. 重新打开终端或命令行窗口
 4. 验证安装：`docker --version` 和 `docker compose version`
 
-## 快速开始
+## 部署方式
 
-### 1. 配置环境变量
+### 方式一：使用Docker Hub镜像（推荐）
+
+适用于大多数用户，无需本地构建，直接部署：
+
+```bash
+# 1. 创建项目目录
+mkdir nginx-proxy && cd nginx-proxy
+
+# 2. 下载部署文件
+wget https://raw.githubusercontent.com/your-repo/main/docker-compose.hub.yml -O docker-compose.yml
+# 或者手动创建 docker-compose.yml 文件，使用 docker-compose.hub.yml 的内容
+
+# 3. 创建并编辑 .env 文件
+cp .env.example .env
+# 编辑 .env 文件，设置你的域名和邮箱
+
+# 4. 启动服务
+docker compose up -d
+```
+
+### 方式二：本地构建（开发者）
+
+适用于需要修改源码或自定义构建的情况：
+
+#### 1. 配置环境变量
 
 ⚠️ **重要提示**：`.env` 文件包含敏感配置信息，**不要**提交到版本控制！
 
@@ -59,7 +83,7 @@ NGINX_PORT=80
 
 ### 2. 启动服务
 
-#### 方法1：使用快速启动脚本（推荐）
+#### 本地构建方法1：使用快速启动脚本（推荐）
 
 ```sh
 # 给脚本执行权限
@@ -69,7 +93,7 @@ chmod +x start.sh
 ./start.sh
 ```
 
-#### 方法2：手动启动
+#### 本地构建方法2：手动启动
 
 ```sh
 # 构建镜像
@@ -226,6 +250,58 @@ tcp6       0      0 :::443                  :::*                    LISTEN      
 
 **错误：`There were too many requests of a given type :: Error creating new order :: too many failed authorizations recently: see https://letsencrypt.org/docs/failed-validation-limit/`**
 - 解决方案：等待1小时后再尝试，或更换域名
+
+## 开发者指南
+
+### 构建和推送Docker镜像
+
+#### 自动构建（GitHub Actions）
+
+1. 在GitHub仓库中设置Secrets：
+   - `DOCKERHUB_USERNAME`: 你的Docker Hub用户名
+   - `DOCKERHUB_TOKEN`: 你的Docker Hub访问令牌
+
+2. 推送代码到main分支或创建标签，GitHub Actions会自动构建并推送镜像
+
+3. 手动触发构建：
+   - 进入GitHub仓库的Actions页面
+   - 选择"Build and Push Docker Image"工作流
+   - 点击"Run workflow"，输入标签名
+
+#### 手动构建和推送
+
+使用提供的构建脚本：
+
+```bash
+# 给脚本执行权限
+chmod +x build-and-push.sh
+
+# 构建并推送latest标签
+./build-and-push.sh nephen2023
+
+# 构建并推送指定标签
+./build-and-push.sh nephen2023 v1.0.0
+```
+
+或者直接使用Docker命令：
+
+```bash
+# 登录Docker Hub
+docker login
+
+# 构建镜像
+docker build -t nephen2023/nginx-web-overseas:latest .
+
+# 推送镜像
+docker push nephen2023/nginx-web-overseas:latest
+```
+
+### 项目文件说明
+
+- `docker-compose.yml`: 本地构建版本（原有功能保持不变）
+- `docker-compose.hub.yml`: Docker Hub镜像部署版本
+- `build-and-push.sh`: 手动构建和推送脚本
+- `.github/workflows/docker-build.yml`: GitHub Actions自动构建配置
 
 ### 添加新域名
 要添加新域名而不影响现有域名：
