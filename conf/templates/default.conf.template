@@ -19,6 +19,9 @@ server {
     gzip_min_length 1024;
     gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
 
+    # 设置客户端请求体最大允许大小（用于文件上传等）
+    client_max_body_size 64M;
+
     location / {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header Host $http_host;
