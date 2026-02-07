@@ -87,6 +87,8 @@ server {
         proxy_set_header Referer \$http_referer;
         real_ip_recursive on;
     }
+
+    client_max_body_size 64M;
 }
 EOF
     fi
